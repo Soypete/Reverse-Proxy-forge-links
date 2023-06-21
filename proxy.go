@@ -1,8 +1,5 @@
 // poc: Forge short links
 // take simple endpoints and redirect them to helpful destinations
-// backend: file with short links and their destinations
-// frontend: server with custom endpoints that redirect to the destinations
-// todo: make a way to save the short links and their destinations.
 
 package main
 
