@@ -7,7 +7,7 @@ This is a reverse proxy server used to forward forge custom links to public urls
 ## Questions
 
 * How could someone get started with your codebase?
-  * this software can be run in 3 ways (way 2 prefered)
+  * this software can be run in 3 ways (way 3 prefered as it has links file) 
 
 ```bash
  curl -LJO https://github.com/Soypete/Reverse-Proxy-forge-links/releases/download/v0.5.0/Reverse-Proxy-forge-links_Darwin_arm64.tar.gz
@@ -17,13 +17,13 @@ This is a reverse proxy server used to forward forge custom links to public urls
 
 ```bash
 go install github.com/Soypete/Reverse-Proxy-forge-links@v0.5.0
-Reverse-Proxy-forge-links
+Reverse-Proxy-forge-links 
 ```
 
 ```bash
 git checkout
 go build .
-./Reverse-Proxy-forge-links
+./Reverse-Proxy-forge-links -filename="forgelinks.json"
 ```
 
 * What resources did you use to build your implementation?
