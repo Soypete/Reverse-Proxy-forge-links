@@ -16,7 +16,7 @@ This is a reverse proxy server used to forward forge custom links to public urls
 ```
 
 ```bash
-go get -u github.com/Soypete/Reverse-Proxy-forge-links@latest
+go install github.com/Soypete/Reverse-Proxy-forge-links@v0.5.0
 Reverse-Proxy-forge-links
 ```
 
