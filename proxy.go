@@ -2,7 +2,7 @@
 // take simple endpoints and redirect them to helpful destinations
 // backend: file with short links and their destinations
 // frontend: server with custom endpoints that redirect to the destinations
-// todo: make a way to save the short links and their destinations
+// todo: make a way to save the short links and their destinations.
 
 package main
 
@@ -17,6 +17,9 @@ import (
 	"os"
 )
 
+type ProxyResponse struct {
+}
+
 // ProxyHandler is a struct that implements the http.Handler interface
 type ProxyHandler struct {
 	proxyList  map[string]*httputil.ReverseProxy
@@ -26,7 +29,8 @@ type ProxyHandler struct {
 // ServeHTTP is a method of the ProxyHandler struct. It implements the http.Handler interface. It logs the url and the linked endpoint.
 func (ph *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	log.Printf("serving: %s at %s", r.URL.Path, ph.shortLinks[r.URL.Path])
-	fmt.Println(r)
+	// http.Redirect(w, r, ph.shortLinks[r.URL.Path], http.StatusMovedPermanently)
+	// r.URL.Path = ph.shortLinks[r.URL.Path]
 	ph.proxyList[r.URL.Path].ServeHTTP(w, r)
 }
 
@@ -50,12 +54,18 @@ func loadShortLinks(filename string) (map[string]string, error) {
 
 func (ph *ProxyHandler) hostReverseProxy() error {
 	for k, v := range ph.shortLinks {
-		fmt.Printf("hosting %s at %s\n", k, v)
 		remote, err := url.Parse(v)
 		if err != nil {
 			return err
 		}
-		ph.proxyList[k] = httputil.NewSingleHostReverseProxy(remote)
+		// set up reverse proxy
+		proxy := &httputil.ReverseProxy{
+			Rewrite: func(r *httputil.ProxyRequest) {
+				r.SetXForwarded()
+				r.SetURL(remote)
+			},
+		}
+		ph.proxyList[k] = proxy
 		http.Handle(k, ph)
 	}
 	return nil
